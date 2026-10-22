@@ -1,9 +1,6 @@
 name: Deploy Website to Cloudflare Pages
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
