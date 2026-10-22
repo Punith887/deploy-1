@@ -18,12 +18,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: List Pages projects
+      - name: List Cloudflare Pages projects
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages project list --json
+          command: pages project list
 
       - name: Deploy website
         uses: cloudflare/wrangler-action@v3
