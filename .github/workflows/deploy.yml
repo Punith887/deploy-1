@@ -1,34 +1,21 @@
-name: Deploy Website to Cloudflare Pages
+name: Diagnose Cloudflare Pages
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 permissions:
   contents: read
-  deployments: write
 
 jobs:
-  deploy:
+  diagnose:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: List Cloudflare Pages projects
+      - name: List accessible Pages projects
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages project list
-
-      - name: Deploy website
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy . --project-name=deploy-1 --branch=main
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
