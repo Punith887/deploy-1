@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AuraZenith - An ambient soundscape generator, Pomodoro focus timer, guided breathing sanctuary, and productivity dashboard built for deep work.">
+  <meta name="theme-color" content="#0d0f18">
+  <title>AuraZenith — Ambient Soundscape & Focus Sanctuary</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/logo.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-aurora">
+  <!-- Interactive Ambient Background Canvas -->
+  <canvas id="ambientCanvas" class="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Background Wallpaper Layer -->
+  <div id="wallpaperLayer" class="wallpaper-layer" aria-hidden="true"></div>
+  <div class="wallpaper-overlay" aria-hidden="true"></div>
+
+  <!-- Confetti Canvas for Task Completion -->
+  <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
+
+  <div class="app-wrapper">
+    <!-- Top Navigation & Header -->
+    <header class="app-header" role="banner">
+      <div class="header-brand">
+        <img src="images/logo.png" alt="AuraZenith Logo" class="brand-logo" id="brandLogo">
+        <div class="brand-text">
+          <h1 class="brand-title">AuraZenith</h1>
+          <span class="brand-subtitle">Ambient Soundscape &amp; Deep Focus Studio</span>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="greeting-box">
+          <span class="greeting-time" id="greetingTime">Welcome</span>
+          <span class="live-clock" id="liveClock" aria-label="Current time">00:00:00</span>
+          <span class="live-date" id="liveDate">Today</span>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <!-- Visual Scene Switcher -->
+        <div class="scene-selector-dropdown">
+          <button id="sceneBtn" class="control-btn scene-btn" title="Change Ambient Scene" aria-haspopup="true" aria-expanded="false">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span class="btn-text">Scene: <strong id="currentSceneName">Aurora</strong></span>
+          </button>
+          <div class="scene-menu" id="sceneMenu" role="menu">
+            <button class="scene-option active" data-theme="theme-aurora" role="menuitem">
+              <span class="scene-dot aurora-dot"></span> Cosmic Aurora
+            </button>
+            <button class="scene-option" data-theme="theme-lofi" role="menuitem">
+              <span class="scene-dot lofi-dot"></span> Lo-Fi Evening
+            </button>
+            <button class="scene-option" data-theme="theme-zen" role="menuitem">
+              <span class="scene-dot zen-dot"></span> Midnight Zen
+            </button>
+            <button class="scene-option" data-theme="theme-cyber" role="menuitem">
+              <span class="scene-dot cyber-dot"></span> Cyber Neon
+            </button>
+          </div>
+        </div>
+
+        <!-- Master Sound Control -->
+        <div class="master-sound-control">
+          <button id="masterMuteBtn" class="control-btn icon-only" title="Toggle Master Audio (M)" aria-label="Toggle Master Audio">
+            <svg id="soundOnIcon" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+            <svg id="soundOffIcon" class="icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <line x1="23" y1="9" x2="17" y2="15"/>
+              <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Fullscreen Button -->
+        <button id="fullscreenBtn" class="control-btn icon-only" title="Toggle Fullscreen" aria-label="Toggle Fullscreen">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+        </button>
+
+        <!-- Keyboard Shortcuts Help -->
+        <button id="shortcutsBtn" class="control-btn icon-only" title="Keyboard Shortcuts (?)" aria-label="Keyboard Shortcuts">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Dashboard -->
+    <main class="dashboard-grid" role="main">
+
+      <!-- Column 1: Focus & Pomodoro Section -->
+      <section class="card glass-card focus-section" id="focusCard" aria-labelledby="focusHeading">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="card-icon-badge">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </span>
+            <h2 id="focusHeading" class="card-title">Focus Engine</h2>
+          </div>
+          <div class="streak-badge" id="streakBadge" title="Consecutive completed focus sessions">
+            <svg class="icon-flame" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2c-.6 3-3 5-3 8a6 6 0 0 0 12 0c0-3-2.4-5-3-8-1.5 2.5-3 3-6 0z"/>
+            </svg>
+            <span id="streakCount">0</span> Streak
+          </div>
+        </div>
+
+        <!-- Mode Selectors -->
+        <div class="timer-mode-tabs" role="tablist" aria-label="Timer modes">
+          <button class="mode-tab active" data-mode="focus" role="tab" aria-selected="true" id="tabFocus">Focus (25m)</button>
+          <button class="mode-tab" data-mode="shortBreak" role="tab" aria-selected="false" id="tabShort">Short Break (5m)</button>
+          <button class="mode-tab" data-mode="longBreak" role="tab" aria-selected="false" id="tabLong">Long Break (15m)</button>
+        </div>
+
+        <!-- Timer Circle Visualizer -->
+        <div class="timer-display-wrapper">
+          <svg class="timer-progress-ring" viewBox="0 0 280 280">
+            <defs>
+              <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="var(--accent-glow)"/>
+                <stop offset="50%" stop-color="var(--accent-primary)"/>
+                <stop offset="100%" stop-color="var(--accent-secondary)"/>
+              </linearGradient>
+              <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="6" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <circle class="ring-bg" cx="140" cy="140" r="120"/>
+            <circle class="ring-progress" id="timerProgressCircle" cx="140" cy="140" r="120"/>
+          </svg>
+
+          <div class="timer-text-content">
+            <span class="timer-status-tag" id="timerStatusTag">Ready to Flow</span>
+            <div class="timer-digits" id="timerDisplay">25:00</div>
+            <span class="timer-sublabel" id="timerSublabel">Stay immersed</span>
+          </div>
+        </div>
+
+        <!-- Timer Controls -->
+        <div class="timer-actions">
+          <button id="timerResetBtn" class="action-btn secondary" title="Reset (R)" aria-label="Reset Timer">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 2v6h6"/>
+              <path d="M3 13a9 9 0 1 0 3-7.7L3 8"/>
+            </svg>
+            <span>Reset</span>
+          </button>
+
+          <button id="timerToggleBtn" class="action-btn primary large" title="Start/Pause (Space)" aria-label="Start or Pause Timer">
+            <svg id="playIcon" class="icon" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            <svg id="pauseIcon" class="icon hidden" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="6" y="4" width="4" height="16"/>
+              <rect x="14" y="4" width="4" height="16"/>
+            </svg>
+            <span id="timerBtnText">Start Focus</span>
+          </button>
+
+          <button id="timerSkipBtn" class="action-btn secondary" title="Skip to next session" aria-label="Skip Session">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5 4 15 12 5 20 5 4"/>
+              <line x1="19" y1="5" x2="19" y2="19"/>
+            </svg>
+            <span>Skip</span>
+          </button>
+        </div>
+
+        <!-- Session Stats Footer -->
+        <div class="timer-stats-footer">
+          <div class="stat-item">
+            <span class="stat-number" id="completedSessions">0</span>
+            <span class="stat-label">Rounds Done</span>
+          </div>
+          <div class="stat-separator"></div>
+          <div class="stat-item">
+            <span class="stat-number" id="focusedMinutes">0m</span>
+            <span class="stat-label">Total Focus</span>
+          </div>
+          <div class="stat-separator"></div>
+          <div class="stat-item">
+            <button id="chimeTestBtn" class="text-link-btn" title="Test harmonious chime audio">
+              <svg class="icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+              <span>Zen Chime</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Column 2: Procedural Ambient Sound Mixer -->
+      <section class="card glass-card soundscape-section" id="soundscapeCard" aria-labelledby="soundscapeHeading">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="card-icon-badge">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18V5l12-2v13"/>
+                <circle cx="6" cy="18" r="3"/>
+                <circle cx="18" cy="16" r="3"/>
+              </svg>
+            </span>
+            <h2 id="soundscapeHeading" class="card-title">Ambient Soundscapes</h2>
+          </div>
+          <span class="tag-pill-live">Realtime Web Audio</span>
+        </div>
+
+        <p class="section-intro-text">
+          Generative acoustic masking synthesized natively in your browser. Blend channels to craft your ideal audio state.
+        </p>
+
+        <!-- Presets Row -->
+        <div class="sound-preset-pills">
+          <span class="preset-label">Presets:</span>
+          <button class="preset-pill" data-preset="rainy-night">Rainy Night</button>
+          <button class="preset-pill" data-preset="deep-zen">Binaural Zen</button>
+          <button class="preset-pill" data-preset="ocean-mist">Ocean Mist</button>
+          <button class="preset-pill" data-preset="cozy-cabin">Cozy Cabin</button>
+          <button class="preset-pill clear-pill" data-preset="mute-all">Clear All</button>
+        </div>
+
+        <!-- Sound Mixer Grid -->
+        <div class="sound-channels-grid">
+          <!-- Channel 1: Rain -->
+          <div class="sound-card" data-channel="rain">
+            <div class="sound-card-top">
+              <div class="sound-meta">
+                <span class="sound-channel-icon rain-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/>
+                    <path d="M8 19v2M8 13v2M12 21v2M12 15v2M16 19v2M16 13v2"/>
+                  </svg>
+                </span>
+                <div>
+                  <h3 class="sound-name">Gentle Rain</h3>
+                  <span class="sound-desc">Patter on glass</span>
+                </div>
+              </div>
+              <button class="sound-toggle-btn" id="toggle-rain" aria-label="Toggle Gentle Rain">
+                <span class="toggle-indicator"></span>
+              </button>
+            </div>
+            <div class="sound-slider-wrapper">
+              <input type="range" class="sound-range-slider" id="volume-rain" min="0" max="100" value="50" aria-label="Rain volume">
+              <div class="sound-level-display">
+                <div class="audio-wave-bars" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <span class="volume-percent" id="label-rain">50%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Channel 2: Ocean Waves -->
+          <div class="sound-card" data-channel="ocean">
+            <div class="sound-card-top">
+              <div class="sound-meta">
+                <span class="sound-channel-icon ocean-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 12c2.5-3 5-3 7.5 0s5 3 7.5 0 5-3 7-0"/>
+                    <path d="M2 17c2.5-3 5-3 7.5 0s5 3 7.5 0 5-3 7-0"/>
+                  </svg>
+                </span>
+                <div>
+                  <h3 class="sound-name">Ocean Waves</h3>
+                  <span class="sound-desc">Rhythmic tide swell</span>
+                </div>
+              </div>
+              <button class="sound-toggle-btn" id="toggle-ocean" aria-label="Toggle Ocean Waves">
+                <span class="toggle-indicator"></span>
+              </button>
+            </div>
+            <div class="sound-slider-wrapper">
+              <input type="range" class="sound-range-slider" id="volume-ocean" min="0" max="100" value="45" aria-label="Ocean volume">
+              <div class="sound-level-display">
+                <div class="audio-wave-bars" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <span class="volume-percent" id="label-ocean">45%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Channel 3: Campfire Crackle -->
+          <div class="sound-card" data-channel="fire">
+            <div class="sound-card-top">
+              <div class="sound-meta">
+                <span class="sound-channel-icon fire-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                  </svg>
+                </span>
+                <div>
+                  <h3 class="sound-name">Campfire</h3>
+                  <span class="sound-desc">Warm timber crackle</span>
+                </div>
+              </div>
+              <button class="sound-toggle-btn" id="toggle-fire" aria-label="Toggle Campfire">
+                <span class="toggle-indicator"></span>
+              </button>
+            </div>
+            <div class="sound-slider-wrapper">
+              <input type="range" class="sound-range-slider" id="volume-fire" min="0" max="100" value="40" aria-label="Campfire volume">
+              <div class="sound-level-display">
+                <div class="audio-wave-bars" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <span class="volume-percent" id="label-fire">40%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Channel 4: Binaural Alpha Beats (432Hz + 10Hz) -->
+          <div class="sound-card" data-channel="binaural">
+            <div class="sound-card-top">
+              <div class="sound-meta">
+                <span class="sound-channel-icon binaural-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+                  </svg>
+                </span>
+                <div>
+                  <h3 class="sound-name">Alpha Waves</h3>
+                  <span class="sound-desc">432Hz + 10Hz pulse</span>
+                </div>
+              </div>
+              <button class="sound-toggle-btn" id="toggle-binaural" aria-label="Toggle Alpha Waves">
+                <span class="toggle-indicator"></span>
+              </button>
+            </div>
+            <div class="sound-slider-wrapper">
+              <input type="range" class="sound-range-slider" id="volume-binaural" min="0" max="100" value="35" aria-label="Binaural volume">
+              <div class="sound-level-display">
+                <div class="audio-wave-bars" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <span class="volume-percent" id="label-binaural">35%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Channel 5: Forest Wind -->
+          <div class="sound-card" data-channel="wind">
+            <div class="sound-card-top">
+              <div class="sound-meta">
+                <span class="sound-channel-icon wind-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>
+                  </svg>
+                </span>
+                <div>
+                  <h3 class="sound-name">Forest Wind</h3>
+                  <span class="sound-desc">Breeze through pines</span>
+                </div>
+              </div>
+              <button class="sound-toggle-btn" id="toggle-wind" aria-label="Toggle Forest Wind">
+                <span class="toggle-indicator"></span>
+              </button>
+            </div>
+            <div class="sound-slider-wrapper">
+              <input type="range" class="sound-range-slider" id="volume-wind" min="0" max="100" value="40" aria-label="Wind volume">
+              <div class="sound-level-display">
+                <div class="audio-wave-bars" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <span class="volume-percent" id="label-wind">40%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Channel 6: Soft Pink Noise -->
+          <div class="sound-card" data-channel="noise">
+            <div class="sound-card-top">
+              <div class="sound-meta">
+                <span class="sound-channel-icon noise-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h2l3 9 4-18 4 18 3-9h2"/>
+                  </svg>
+                </span>
+                <div>
+                  <h3 class="sound-name">Pink Noise</h3>
+                  <span class="sound-desc">Acoustic masking</span>
+                </div>
+              </div>
+              <button class="sound-toggle-btn" id="toggle-noise" aria-label="Toggle Pink Noise">
+                <span class="toggle-indicator"></span>
+              </button>
+            </div>
+            <div class="sound-slider-wrapper">
+              <input type="range" class="sound-range-slider" id="volume-noise" min="0" max="100" value="30" aria-label="Pink Noise volume">
+              <div class="sound-level-display">
+                <div class="audio-wave-bars" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <span class="volume-percent" id="label-noise">30%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Column 3: Mindful Breathing Sanctuary -->
+      <section class="card glass-card breathing-section" id="breathingCard" aria-labelledby="breathingHeading">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="card-icon-badge">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M8 12a4 4 0 0 1 8 0"/>
+                <path d="M12 8v4"/>
+              </svg>
+            </span>
+            <h2 id="breathingHeading" class="card-title">Mindful Breathing</h2>
+          </div>
+          <div class="breath-cycle-badge" id="breathCycles">0 Cycles</div>
+        </div>
+
+        <!-- Breathing Technique Selection -->
+        <div class="breath-technique-tabs">
+          <button class="technique-tab active" data-technique="box" id="techBox">Box (4-4-4-4)</button>
+          <button class="technique-tab" data-technique="relax" id="techRelax">4-7-8 Relax</button>
+          <button class="technique-tab" data-technique="energy" id="techEnergy">Awaken (4-2-4)</button>
+        </div>
+
+        <!-- Breathing Visualizer Orb -->
+        <div class="breathing-orb-container">
+          <div class="breathing-ring-outer" id="breathOuterRing"></div>
+          <div class="breathing-ring-middle" id="breathMiddleRing"></div>
+          <div class="breathing-orb" id="breathingOrb">
+            <div class="orb-core"></div>
+            <div class="orb-content">
+              <span class="breath-phase-text" id="breathPhaseText">Ready</span>
+              <span class="breath-counter-text" id="breathCounterText">4</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="breathing-instructions" id="breathInstruction">
+          Click below to initiate rhythm guidance. Sync your breath with the expanding orb.
+        </div>
+
+        <!-- Breathing Action Button -->
+        <div class="breathing-actions">
+          <button id="breathToggleBtn" class="action-btn primary" title="Toggle Breathing Guide (B)" aria-label="Start Breathing Session">
+            <svg id="breathStartIcon" class="icon" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            <svg id="breathStopIcon" class="icon hidden" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="6" y="6" width="12" height="12" rx="2"/>
+            </svg>
+            <span id="breathBtnLabel">Start Breathing</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Column 4: Focus Tasks & Daily Intentions -->
+      <section class="card glass-card tasks-section" id="tasksCard" aria-labelledby="tasksHeading">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="card-icon-badge">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+            </span>
+            <h2 id="tasksHeading" class="card-title">Daily Intentions</h2>
+          </div>
+          <button id="clearCompletedBtn" class="text-link-btn" title="Clear completed tasks">Clear Done</button>
+        </div>
+
+        <!-- New Task Form -->
+        <form id="taskForm" class="task-input-form" onsubmit="return false;">
+          <div class="input-row">
+            <input 
+              type="text" 
+              id="taskInput" 
+              class="task-input-field" 
+              placeholder="What is your singular priority?" 
+              maxlength="100" 
+              autocomplete="off"
+              required
+            >
+            <button type="submit" id="addTaskBtn" class="add-task-btn" title="Add priority intention" aria-label="Add Task">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Tag Pills for Task -->
+          <div class="task-tags-selector">
+            <label class="tag-radio">
+              <input type="radio" name="taskTag" value="Deep Work" checked>
+              <span class="tag-chip chip-deep">#DeepWork</span>
+            </label>
+            <label class="tag-radio">
+              <input type="radio" name="taskTag" value="Study">
+              <span class="tag-chip chip-study">#Study</span>
+            </label>
+            <label class="tag-radio">
+              <input type="radio" name="taskTag" value="Creative">
+              <span class="tag-chip chip-creative">#Creative</span>
+            </label>
+            <label class="tag-radio">
+              <input type="radio" name="taskTag" value="Wellness">
+              <span class="tag-chip chip-wellness">#Wellness</span>
+            </label>
+          </div>
+        </form>
+
+        <!-- Task Filter Tabs -->
+        <div class="task-filters">
+          <button class="filter-tab active" data-filter="all">All (<span id="countAll">0</span>)</button>
+          <button class="filter-tab" data-filter="active">Active (<span id="countActive">0</span>)</button>
+          <button class="filter-tab" data-filter="completed">Done (<span id="countCompleted">0</span>)</button>
+        </div>
+
+        <!-- Task List Container -->
+        <div class="task-list-container" id="taskListContainer" role="list" aria-label="Priority tasks">
+          <!-- Dynamic tasks rendered here -->
+        </div>
+      </section>
+
+      <!-- Column 5: Zen Wisdom & Daily Scratchpad -->
+      <section class="card glass-card wisdom-section" id="wisdomCard" aria-labelledby="wisdomHeading">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="card-icon-badge">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+            </span>
+            <h2 id="wisdomHeading" class="card-title">Mindful Wisdom</h2>
+          </div>
+          <button id="refreshQuoteBtn" class="icon-refresh-btn" title="New Inspiring Quote" aria-label="New Quote">
+            <svg class="icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"/>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Quote Container -->
+        <div class="quote-box">
+          <svg class="quote-glyph" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
+          </svg>
+          <blockquote class="quote-text" id="quoteText">
+            "Almost everything will work again if you unplug it for a few minutes, including you."
+          </blockquote>
+          <cite class="quote-author" id="quoteAuthor">— Anne Lamott</cite>
+        </div>
+
+        <!-- Quick Focus Scratchpad -->
+        <div class="scratchpad-wrapper">
+          <div class="scratchpad-header">
+            <label for="scratchpadInput" class="scratchpad-title">Ephemeral Scratchpad</label>
+            <span class="auto-save-pill" id="autoSavePill">Synced</span>
+          </div>
+          <textarea 
+            id="scratchpadInput" 
+            class="scratchpad-textarea" 
+            placeholder="Jot down passing ideas or thoughts to keep your mind clear during focus..."
+            rows="4"
+          ></textarea>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom App Footer -->
+    <footer class="app-footer" role="contentinfo">
+      <div class="footer-left">
+        <span>AuraZenith v1.0 &bull; Crafted with HTML, CSS, JavaScript &amp; Web Audio API</span>
+      </div>
+      <div class="footer-right">
+        <span class="shortcut-tip">Press <kbd>?</kbd> for shortcuts &bull; <kbd>Space</kbd> to toggle focus &bull; <kbd>B</kbd> for breathing</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Keyboard Shortcuts Modal Dialog -->
+  <div id="shortcutsModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card glass-modal">
+      <div class="modal-header">
+        <h3 id="modalTitle" class="modal-title">Keyboard Shortcuts</h3>
+        <button id="closeModalBtn" class="modal-close-btn" aria-label="Close shortcuts modal">&times;</button>
+      </div>
+      <div class="shortcuts-grid">
+        <div class="shortcut-item">
+          <kbd>Space</kbd>
+          <span>Start / Pause Focus Timer</span>
+        </div>
+        <div class="shortcut-item">
+          <kbd>R</kbd>
+          <span>Reset Timer</span>
+        </div>
+        <div class="shortcut-item">
+          <kbd>S</kbd>
+          <span>Skip Session</span>
+        </div>
+        <div class="shortcut-item">
+          <kbd>M</kbd>
+          <span>Mute / Unmute Audio</span>
+        </div>
+        <div class="shortcut-item">
+          <kbd>B</kbd>
+          <span>Toggle Breathing Guide</span>
+        </div>
+        <div class="shortcut-item">
+          <kbd>?</kbd>
+          <span>Show / Hide Shortcuts</span>
+        </div>
+      </div>
+      <button id="modalDismissBtn" class="action-btn primary full-width">Got it</button>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
