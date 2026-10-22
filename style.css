@@ -20,13 +20,14 @@
   --surface-glass-hover: rgba(26, 29, 46, 0.75);
   --surface-card: rgba(14, 16, 26, 0.72);
   --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glass-bright: rgba(94, 234, 212, 0.35);
+  --border-glass-bright: rgba(167, 139, 250, 0.4);
 
-  --accent-primary: #14b8a6;
-  --accent-secondary: #8b5cf6;
-  --accent-glow: #2dd4bf;
-  --accent-gradient: linear-gradient(135deg, #2dd4bf 0%, #8b5cf6 100%);
-  --accent-gradient-hover: linear-gradient(135deg, #5eead4 0%, #a78bfa 100%);
+  --accent-rgb: 139, 92, 246;
+  --accent-primary: #8b5cf6;
+  --accent-secondary: #6366f1;
+  --accent-glow: #a78bfa;
+  --accent-gradient: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  --accent-gradient-hover: linear-gradient(135deg, #a78bfa 0%, #818cf8 100%);
 
   --text-main: #f1f5f9;
   --text-muted: #94a3b8;
@@ -37,8 +38,8 @@
   --tag-creative: #ec4899;
   --tag-wellness: #10b981;
 
-  --shadow-ambient: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 30px rgba(45, 212, 191, 0.08);
-  --shadow-glow: 0 0 25px rgba(45, 212, 191, 0.35);
+  --shadow-ambient: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 30px rgba(139, 92, 246, 0.08);
+  --shadow-glow: 0 0 25px rgba(139, 92, 246, 0.35);
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
@@ -54,6 +55,7 @@
 body.theme-lofi {
   --bg-base: #100b14;
   --bg-wallpaper: url('images/bg-lofi.jpg');
+  --accent-rgb: 251, 146, 60;
   --wallpaper-filter: blur(8px) brightness(0.6) saturate(1.2);
   --wallpaper-overlay: radial-gradient(circle at 50% 50%, rgba(10, 11, 18, 0.5) 0%, rgba(6, 7, 12, 0.92) 100%);
   --surface-glass: rgba(24, 16, 28, 0.7);
@@ -76,6 +78,7 @@ body.theme-lofi {
 body.theme-zen {
   --bg-base: #06090e;
   --bg-wallpaper: radial-gradient(circle at 50% 20%, #111a28 0%, #06090e 85%);
+  --accent-rgb: 56, 189, 248;
   --wallpaper-filter: blur(8px) brightness(0.6) saturate(1.2);
   --wallpaper-overlay: radial-gradient(circle at 50% 50%, rgba(10, 11, 18, 0.5) 0%, rgba(6, 7, 12, 0.92) 100%);
   --surface-glass: rgba(12, 17, 26, 0.75);
@@ -98,6 +101,7 @@ body.theme-zen {
 body.theme-cyber {
   --bg-base: #090214;
   --bg-wallpaper: radial-gradient(circle at 70% 30%, #200839 0%, #090214 90%);
+  --accent-rgb: 244, 63, 94;
   --wallpaper-filter: blur(8px) brightness(0.6) saturate(1.2);
   --wallpaper-overlay: radial-gradient(circle at 50% 50%, rgba(10, 11, 18, 0.5) 0%, rgba(6, 7, 12, 0.92) 100%);
   --surface-glass: rgba(18, 5, 30, 0.78);
@@ -761,8 +765,8 @@ body {
 .tag-pill-live {
   display: inline-block;
   padding: 0.25rem 0.65rem;
-  background: rgba(45, 212, 191, 0.12);
-  border: 1px solid rgba(45, 212, 191, 0.3);
+  background: rgba(var(--accent-rgb), 0.12);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
   border-radius: var(--radius-full);
   color: var(--accent-glow);
   font-size: 0.72rem;
@@ -851,7 +855,7 @@ body {
 .sound-card.active {
   border-color: var(--border-glass-bright);
   background: rgba(20, 24, 38, 0.45);
-  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5), 0 0 16px rgba(45, 212, 191, 0.1);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5), 0 0 16px rgba(var(--accent-rgb), 0.1);
 }
 
 .sound-card-top {
@@ -1092,7 +1096,7 @@ body {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.12) 0%, transparent 70%);
   filter: blur(10px);
   transition: transform 3s ease-in-out;
 }
@@ -1198,7 +1202,7 @@ body {
 
 .task-input-field:focus {
   border-color: var(--border-glass-bright);
-  box-shadow: 0 0 16px rgba(45, 212, 191, 0.2);
+  box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.2);
   background: rgba(0, 0, 0, 0.45);
 }
 
