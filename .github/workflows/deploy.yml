@@ -12,14 +12,13 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy to Cloudflare Pages
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check Cloudflare Pages projects
+      - name: List Cloudflare Pages projects
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
