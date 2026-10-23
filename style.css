@@ -51,36 +51,36 @@
   --transition-spring: 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Theme: Soft Light */
-body.theme-light {
-  --bg-base: #f7f2e8;
-  --bg-wallpaper: radial-gradient(ellipse at 50% 0%, #fffdf7 0%, #f5eddf 58%, #e9dfcf 100%);
+/* Theme: Ocean Blue */
+body.theme-ocean {
+  --bg-base: #eaf4fb;
+  --bg-wallpaper: radial-gradient(ellipse at 50% 0%, #f8fcff 0%, #e4f1fa 58%, #d5e8f5 100%);
   --wallpaper-filter: none;
-  --wallpaper-overlay: linear-gradient(135deg, rgba(255, 252, 245, 0.18), rgba(239, 226, 208, 0.28));
-  --surface-glass: rgba(255, 253, 248, 0.78);
-  --surface-glass-hover: rgba(255, 255, 255, 0.92);
-  --surface-card: rgba(255, 251, 243, 0.9);
-  --border-glass: rgba(91, 72, 48, 0.14);
-  --border-glass-bright: rgba(91, 72, 48, 0.3);
+  --wallpaper-overlay: linear-gradient(135deg, rgba(248, 252, 255, 0.18), rgba(213, 232, 245, 0.28));
+  --surface-glass: rgba(248, 252, 255, 0.8);
+  --surface-glass-hover: rgba(255, 255, 255, 0.94);
+  --surface-card: rgba(244, 250, 255, 0.92);
+  --border-glass: rgba(40, 91, 125, 0.14);
+  --border-glass-bright: rgba(40, 91, 125, 0.3);
 
-  --accent-rgb: 120, 91, 57;
-  --accent-primary: #795b39;
-  --accent-secondary: #b17b55;
-  --accent-glow: #a8794e;
-  --accent-gradient: linear-gradient(135deg, #9b7049 0%, #c49b6c 100%);
-  --accent-gradient-hover: linear-gradient(135deg, #805b3a 0%, #b17b55 100%);
+  --accent-rgb: 42, 112, 157;
+  --accent-primary: #2a709d;
+  --accent-secondary: #4c9bbd;
+  --accent-glow: #5ba6c8;
+  --accent-gradient: linear-gradient(135deg, #2a709d 0%, #61aeca 100%);
+  --accent-gradient-hover: linear-gradient(135deg, #225e86 0%, #4c9bbd 100%);
 
-  --text-main: #30291f;
-  --text-muted: #6f6252;
-  --text-dim: #8b7d6b;
+  --text-main: #203442;
+  --text-muted: #526b7b;
+  --text-dim: #718898;
 
-  --tag-deep: #795b39;
-  --tag-study: #795b39;
-  --tag-creative: #795b39;
-  --tag-wellness: #795b39;
+  --tag-deep: #2a709d;
+  --tag-study: #2a709d;
+  --tag-creative: #2a709d;
+  --tag-wellness: #2a709d;
 
-  --shadow-ambient: 0 20px 40px -15px rgba(77, 58, 36, 0.2), 0 0 30px rgba(255, 255, 255, 0.45);
-  --shadow-glow: 0 0 25px rgba(121, 91, 57, 0.2);
+  --shadow-ambient: 0 20px 40px -15px rgba(40, 76, 99, 0.2), 0 0 30px rgba(255, 255, 255, 0.45);
+  --shadow-glow: 0 0 25px rgba(42, 112, 157, 0.2);
 }
 
 /* Theme: Lo-Fi Evening */
@@ -451,7 +451,7 @@ body {
   border-radius: 50%;
 }
 .aurora-dot { background: #2dd4bf; box-shadow: 0 0 8px #2dd4bf; }
-.light-dot  { background: #c49b6c; box-shadow: 0 0 8px #c49b6c; }
+.ocean-dot  { background: #4c9bbd; box-shadow: 0 0 8px #4c9bbd; }
 .lofi-dot   { background: #fb923c; box-shadow: 0 0 8px #fb923c; }
 .zen-dot    { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
 .cyber-dot  { background: #f43f5e; box-shadow: 0 0 8px #f43f5e; }
