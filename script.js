@@ -1247,8 +1247,9 @@ const SceneModule = {
   nameEl: document.getElementById('currentSceneName'),
 
   init() {
-    const savedTheme = localStorage.getItem('aurazenith_theme') || 'theme-light';
-    this.applyTheme(savedTheme);
+    const savedTheme = localStorage.getItem('aurazenith_theme');
+    const initialTheme = savedTheme === 'theme-light' ? 'theme-ocean' : savedTheme || 'theme-ocean';
+    this.applyTheme(initialTheme);
 
     if (this.btn && this.menu) {
       this.btn.addEventListener('click', (e) => {
@@ -1275,7 +1276,7 @@ const SceneModule = {
     localStorage.setItem('aurazenith_theme', themeClass);
 
     let name = 'Aurora';
-    if (themeClass === 'theme-light') name = 'Soft Light';
+    if (themeClass === 'theme-ocean') name = 'Ocean Blue';
     else if (themeClass === 'theme-lofi') name = 'Lo-Fi';
     else if (themeClass === 'theme-zen') name = 'Midnight';
     else if (themeClass === 'theme-cyber') name = 'Cyber';
