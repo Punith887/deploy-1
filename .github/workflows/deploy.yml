@@ -47,3 +47,17 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy . --project-name=deploy-1 --branch=main
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add deployment summary
+        if: success()
+        run: |
+          {
+            echo "## Deployment Summary"
+            echo ""
+            echo "- **Platform:** Cloudflare Pages"
+            echo "- **Project:** \`deploy-1\`"
+            echo "- **Target branch:** \`main\`"
+            echo "- **Commit:** \`${GITHUB_SHA}\`"
+            echo "- **Result:** Successful"
+            echo "- **Docker image:** \`deploy-1:latest\` built and verified"
+          } >> "$GITHUB_STEP_SUMMARY"
