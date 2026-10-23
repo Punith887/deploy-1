@@ -1147,9 +1147,16 @@ const AmbientCanvas = {
 
       this.ctx.beginPath();
       this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      this.ctx.fillStyle = `rgba(147, 197, 253, ${Math.max(0.1, Math.min(0.8, p.alpha))})`;
-      this.ctx.shadowBlur = 12;
-      this.ctx.shadowColor = 'rgba(94, 234, 212, 0.4)';
+      const isMinimal = document.body.classList.contains('theme-minimal');
+      if (isMinimal) {
+        this.ctx.fillStyle = `rgba(0, 0, 0, ${Math.max(0.08, Math.min(0.4, p.alpha * 0.5))})`;
+        this.ctx.shadowBlur = 4;
+        this.ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
+      } else {
+        this.ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.12, Math.min(0.85, p.alpha))})`;
+        this.ctx.shadowBlur = 8;
+        this.ctx.shadowColor = 'rgba(255, 255, 255, 0.4)';
+      }
       this.ctx.fill();
     }
 
@@ -1180,7 +1187,10 @@ const ConfettiEngine = {
 
   trigger() {
     if (!this.canvas || !this.ctx) return;
-    const colors = ['#2dd4bf', '#8b5cf6', '#fb923c', '#f43f5e', '#38bdf8', '#34d399'];
+    const isMinimal = document.body.classList.contains('theme-minimal');
+    const colors = isMinimal
+      ? ['#09090b', '#27272a', '#52525b', '#71717a', '#a1a1aa', '#d4d4d8']
+      : ['#ffffff', '#f4f4f5', '#e4e4e7', '#cbd5e1', '#a1a1aa', '#71717a'];
     this.pieces = [];
 
     for (let i = 0; i < 75; i++) {
@@ -1248,7 +1258,8 @@ const SceneModule = {
 
   init() {
     const savedTheme = localStorage.getItem('aurazenith_theme');
-    const initialTheme = savedTheme === 'theme-light' ? 'theme-ocean' : savedTheme || 'theme-ocean';
+    const validThemes = ['theme-noir', 'theme-obsidian', 'theme-titanium', 'theme-minimal'];
+    const initialTheme = (savedTheme && validThemes.includes(savedTheme)) ? savedTheme : 'theme-noir';
     this.applyTheme(initialTheme);
 
     if (this.btn && this.menu) {
@@ -1275,11 +1286,10 @@ const SceneModule = {
     document.body.className = themeClass;
     localStorage.setItem('aurazenith_theme', themeClass);
 
-    let name = 'Aurora';
-    if (themeClass === 'theme-ocean') name = 'Ocean Blue';
-    else if (themeClass === 'theme-lofi') name = 'Lo-Fi';
-    else if (themeClass === 'theme-zen') name = 'Midnight';
-    else if (themeClass === 'theme-cyber') name = 'Cyber';
+    let name = 'Studio Noir';
+    if (themeClass === 'theme-obsidian') name = 'Obsidian';
+    else if (themeClass === 'theme-titanium') name = 'Titanium';
+    else if (themeClass === 'theme-minimal') name = 'Minimalist';
 
     if (this.nameEl) this.nameEl.textContent = name;
 

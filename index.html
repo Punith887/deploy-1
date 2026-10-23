@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
     content="AuraZenith - An ambient soundscape generator, Pomodoro focus timer, guided breathing sanctuary, and productivity dashboard built for deep work.">
-  <meta name="theme-color" content="#367fa8">
+  <meta name="theme-color" content="#060608">
   <title>AuraZenith — Ambient Soundscape & Focus Sanctuary</title>
 
   <!-- Favico -->
@@ -23,17 +23,17 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="theme-ocean">
+<body class="theme-noir">
   <!-- Interactive Ambient Background Canvas -->
   <canvas id="ambientCanvas" class="ambient-canvas" aria-hidden="true"></canvas>
-  <p>alla</p>
+
   <!-- Background Wallpaper Layer -->
   <div id="wallpaperLayer" class="wallpaper-layer" aria-hidden="true"></div>
   <div class="wallpaper-overlay" aria-hidden="true"></div>
 
   <!-- Confetti Canvas for Task Completion -->
   <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
-  <h1>puneet has a five wifes</h1>
+
   <div class="app-wrapper">
     <!-- Top Navigation & Header -->
     <header class="app-header" role="banner">
@@ -54,32 +54,29 @@
       </div>
 
       <div class="header-controls">
-        <!-- Visual Scene Switcher -->
+        <!-- Visual Style Switcher -->
         <div class="scene-selector-dropdown">
-          <button id="sceneBtn" class="control-btn scene-btn" title="Change Ambient Scene" aria-haspopup="true"
+          <button id="sceneBtn" class="control-btn scene-btn" title="Change Visual Style" aria-haspopup="true"
             aria-expanded="false">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
               <circle cx="8.5" cy="8.5" r="1.5" />
               <polyline points="21 15 16 10 5 21" />
             </svg>
-            <span class="btn-text">Scene: <strong id="currentSceneName">Aurora</strong></span>
+            <span class="btn-text">Style: <strong id="currentSceneName">Studio Noir</strong></span>
           </button>
           <div class="scene-menu" id="sceneMenu" role="menu">
-            <button class="scene-option active" data-theme="theme-ocean" role="menuitem">
-              <span class="scene-dot ocean-dot"></span> Ocean Blue
+            <button class="scene-option active" data-theme="theme-noir" role="menuitem">
+              <span class="scene-dot noir-dot"></span> Studio Noir
             </button>
-            <button class="scene-option" data-theme="theme-aurora" role="menuitem">
-              <span class="scene-dot aurora-dot"></span> Cosmic Aurora
+            <button class="scene-option" data-theme="theme-obsidian" role="menuitem">
+              <span class="scene-dot obsidian-dot"></span> Obsidian Carbon
             </button>
-            <button class="scene-option" data-theme="theme-lofi" role="menuitem">
-              <span class="scene-dot lofi-dot"></span> Lo-Fi Evening
+            <button class="scene-option" data-theme="theme-titanium" role="menuitem">
+              <span class="scene-dot titanium-dot"></span> Titanium Silver
             </button>
-            <button class="scene-option" data-theme="theme-zen" role="menuitem">
-              <span class="scene-dot zen-dot"></span> Midnight Zen
-            </button>
-            <button class="scene-option" data-theme="theme-cyber" role="menuitem">
-              <span class="scene-dot cyber-dot"></span> Cyber Neon
+            <button class="scene-option" data-theme="theme-minimal" role="menuitem">
+              <span class="scene-dot minimal-dot"></span> Minimalist Light
             </button>
           </div>
         </div>
