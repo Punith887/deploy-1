@@ -53,10 +53,10 @@
 
 /* Theme: Ocean Blue */
 body.theme-ocean {
-  --bg-base: #367fa8;
-  --bg-wallpaper: radial-gradient(ellipse at 50% 0%, #d8f1ff 0%, #72b7db 58%, #367fa8 100%);
+  --bg-base: #eaf4fb;
+  --bg-wallpaper: radial-gradient(ellipse at 50% 0%, #f8fcff 0%, #e4f1fa 58%, #d5e8f5 100%);
   --wallpaper-filter: none;
-  --wallpaper-overlay: linear-gradient(135deg, rgba(248, 252, 255, 0.08), rgba(16, 78, 112, 0.16));
+  --wallpaper-overlay: linear-gradient(135deg, rgba(248, 252, 255, 0.18), rgba(213, 232, 245, 0.28));
   --surface-glass: rgba(248, 252, 255, 0.8);
   --surface-glass-hover: rgba(255, 255, 255, 0.94);
   --surface-card: rgba(244, 250, 255, 0.92);
