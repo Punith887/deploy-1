@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="AuraZenith - An ambient soundscape generator, Pomodoro focus timer, guided breathing sanctuary, and productivity dashboard built for deep work.">
-  <meta name="theme-color" content="#090a0d">
+  <meta name="theme-color" content="#f7f2e8">
   <title>AuraZenith — Ambient Soundscape & Focus Sanctuary</title>
   
   <!-- Favicon -->
@@ -18,7 +18,7 @@
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="theme-aurora">
+<body class="theme-light">
   <!-- Interactive Ambient Background Canvas -->
   <canvas id="ambientCanvas" class="ambient-canvas" aria-hidden="true"></canvas>
    <p>alla</p>
@@ -60,7 +60,10 @@
             <span class="btn-text">Scene: <strong id="currentSceneName">Aurora</strong></span>
           </button>
           <div class="scene-menu" id="sceneMenu" role="menu">
-            <button class="scene-option active" data-theme="theme-aurora" role="menuitem">
+            <button class="scene-option active" data-theme="theme-light" role="menuitem">
+              <span class="scene-dot light-dot"></span> Soft Light
+            </button>
+            <button class="scene-option" data-theme="theme-aurora" role="menuitem">
               <span class="scene-dot aurora-dot"></span> Cosmic Aurora
             </button>
             <button class="scene-option" data-theme="theme-lofi" role="menuitem">
